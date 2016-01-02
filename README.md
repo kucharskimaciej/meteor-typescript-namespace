@@ -1,0 +1,1 @@
+# Namespace decorator for TypeScript classes
