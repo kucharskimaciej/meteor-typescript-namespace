@@ -1,6 +1,10 @@
 {
   "name": "meteor-typescript-namespace",
   "author": "Maciej Kucharski",
+  "scripts": {
+    "build": "./node_modules/.bin/tsc",
+    "postinstall": "./node_modules/.bin/tsd install && npm run build"
+  },
   "devDependencies": {
     "tsd": "^0.6.5",
     "tslint": "^3.2.1",
