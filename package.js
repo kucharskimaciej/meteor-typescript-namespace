@@ -2,7 +2,7 @@ Package.describe({
   name: 'kucharskimaciej:typescript-namespace',
   version: '1.0.0',
   summary: 'Namespace decorator for TypeScript classes',
-  git: 'git@github.com:kucharskimaciej/meteor-typescript-namespace.git',
+  git: 'https://github.com/kucharskimaciej/meteor-typescript-namespace',
   documentation: 'README.md'
 });
 

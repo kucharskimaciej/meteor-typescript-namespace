@@ -1,6 +1,12 @@
 {
   "name": "meteor-typescript-namespace",
   "author": "Maciej Kucharski",
+  "license" : "see LICENSE.md",
+  "private": true,
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/kucharskimaciej/meteor-typescript-namespace"
+  },
   "scripts": {
     "build": "./node_modules/.bin/tsc",
     "postinstall": "./node_modules/.bin/tsd install && npm run build"
