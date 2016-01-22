@@ -1,4 +1,4 @@
-# Namespace decorator/function for TypeScript compiled Meteor
+# Namespaces for TypeScript compiled Meteor
 
 A pattern to simulate namespace behaviour in Typescript.
 
