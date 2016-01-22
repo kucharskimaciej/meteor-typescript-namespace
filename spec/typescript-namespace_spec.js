@@ -155,7 +155,7 @@ Tinytest.add("works with named functions", function (test) {
     test.isNotUndefined(foo.hello.bar);
     teardown();
 });
-Tinytest.add("works with annonymous functions", function (test) {
+Tinytest.add("works with anonymous functions", function (test) {
     Namespace("foo", function t1() {
         this.bar = "baz";
     });

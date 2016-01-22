@@ -104,7 +104,7 @@ Tinytest.add("works with named functions", (test) => {
     teardown();
 });
 
-Tinytest.add("works with annonymous functions", (test) => {
+Tinytest.add("works with anonymous functions", (test) => {
     Namespace("foo", function t1() {
         this.bar = "baz";
     });
