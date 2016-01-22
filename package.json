@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "./node_modules/.bin/tsc",
-    "postinstall": "./node_modules/.bin/tsd install && npm run build"
+    "postinstall": "./node_modules/.bin/tsd install && npm run build",
+    "test": "meteor test-packages ./"
   },
   "devDependencies": {
     "tsd": "^0.6.5",
