@@ -1,14 +1,18 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var teardown = (function (root) {
+    return function () {
+        if (root.foo)
+            delete root.foo;
+    };
+})(this);
 Tinytest.add("is a function", function (test) {
     test.instanceOf(Namespace, Function);
 });
@@ -27,6 +31,7 @@ Tinytest.add("can be used on classes", function (test) {
     catch (e) {
         test.fail("Should not throw an error when used on class");
     }
+    teardown();
 });
 Tinytest.add("throws an error when used without namespace name", function (test) {
     test.throws(function () {
@@ -53,6 +58,7 @@ Tinytest.add("throws an error when used with empty namespace name", function (te
             return TestClass;
         })();
     });
+    teardown();
 });
 Tinytest.add("throws an error when used on anything but class", function (test) {
     test.throws(function () {
@@ -60,16 +66,16 @@ Tinytest.add("throws an error when used on anything but class", function (test) 
             function Test() {
             }
             Test.prototype.method = function () { };
-            Object.defineProperty(Test.prototype, "method",
-                __decorate([
-                    Namespace("foo"), 
-                    __metadata('design:type', Function), 
-                    __metadata('design:paramtypes', []), 
-                    __metadata('design:returntype', void 0)
-                ], Test.prototype, "method", Object.getOwnPropertyDescriptor(Test.prototype, "method")));
+            __decorate([
+                Namespace("foo"), 
+                __metadata('design:type', Function), 
+                __metadata('design:paramtypes', []), 
+                __metadata('design:returntype', void 0)
+            ], Test.prototype, "method", null);
             return Test;
         })();
     });
+    teardown();
 });
 Tinytest.add("works for simple cases", function (test) {
     var Test = (function () {
@@ -81,7 +87,8 @@ Tinytest.add("works for simple cases", function (test) {
         ], Test);
         return Test;
     })();
-    test.ok(test.Test);
+    test.isNotUndefined(foo.Test);
+    teardown();
 });
 Tinytest.add("works for multi-part namespaces", function (test) {
     var Test = (function () {
@@ -93,7 +100,7 @@ Tinytest.add("works for multi-part namespaces", function (test) {
         ], Test);
         return Test;
     })();
-    test.ok(foo.bar.Test);
+    test.isNotUndefined(foo.bar.Test);
 });
 Tinytest.add("allows reusing namespaces", function (test) {
     var Test = (function () {
@@ -114,8 +121,9 @@ Tinytest.add("allows reusing namespaces", function (test) {
         ], Test2);
         return Test2;
     })();
-    test.ok(foo.bar.Test);
-    test.ok(foo.bar.Test2);
+    test.isNotUndefined(foo.bar.Test);
+    test.isNotUndefined(foo.bar.Test2);
+    teardown();
 });
 Tinytest.add("allows nesting namespaces", function (test) {
     var Test = (function () {
@@ -136,6 +144,25 @@ Tinytest.add("allows nesting namespaces", function (test) {
         ], Test2);
         return Test2;
     })();
-    test.ok(foo.bar.Test);
-    test.ok(foo.bar.baz.Test2);
+    test.isNotUndefined(foo.bar.Test);
+    test.isNotUndefined(foo.bar.baz.Test2);
+    teardown();
+});
+Tinytest.add("works with named functions", function (test) {
+    Namespace("foo", function hello() {
+        this.bar = "baz";
+    });
+    test.isNotUndefined(foo.hello.bar);
+    teardown();
+});
+Tinytest.add("works with annonymous functions", function (test) {
+    Namespace("foo", function t1() {
+        this.bar = "baz";
+    });
+    Namespace("foo.t1", function () {
+        test.isNotUndefined(this.bar);
+        this.baz = "bar";
+    });
+    test.isNotUndefined(foo.t1.baz);
+    teardown();
 });

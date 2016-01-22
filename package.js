@@ -1,6 +1,6 @@
 Package.describe({
   name: 'kucharskimaciej:typescript-namespace',
-  version: '1.0.0',
+  version: '1.1.0',
   summary: 'Namespace decorator for TypeScript classes',
   git: 'https://github.com/kucharskimaciej/meteor-typescript-namespace',
   documentation: 'README.md'
