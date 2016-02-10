@@ -20,15 +20,15 @@
         }
         if (!fn) {
             return function (fn) {
-                var rest = [];
-                for (var _i = 1; _i < arguments.length; _i++) {
-                    rest[_i - 1] = arguments[_i];
-                }
-                if (rest.length > 0) {
+                if (arguments.length > 1) {
                     throw new Error("namespacing can only be used on classes");
                 }
                 target[fn.name] = fn;
             };
+        }
+        if (typeof fn !== "function") {
+            Object.assign(target, fn);
+            return target;
         }
         if (fn.name) {
             var result = {};
@@ -38,5 +38,6 @@
         else {
             fn.call(target);
         }
+        return target;
     };
 })(this);

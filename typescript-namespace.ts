@@ -1,15 +1,14 @@
 ((root: any) => {
     // workaround for typescript compiler
     interface Function {
-        name: string;
+        name?: string;
         call: (context:any) => any;
     }
 
     const pathSplitRegexp = new RegExp('\s*[.:]\s*');
 
-    root.Namespace = (name: string, fn: Function = null) => {
+    root.Namespace = function(name: string, fn: Function | any = null) {
         let target;
-
 
         if(!name) {
             throw new Error("has to be used with a namespace name");
@@ -32,13 +31,20 @@
 
         if(!fn) {
             // is used as a class decorator
-            return (fn:Function, ...rest) => {
-                if (rest.length > 0) {
+            return function (fn:Function) {
+                if (arguments.length > 1) {
                     throw new Error("namespacing can only be used on classes");
                 }
                 target[fn.name] = fn;
             };
         }
+
+        // assuming an object being passed in
+        if(typeof fn !== "function") {
+            Object.assign(target, fn);
+            return target;
+        }
+
         // is used with named function;
         // create next level of namespace and run the function
         if (fn.name) {
@@ -47,7 +53,11 @@
             target[fn.name] = result;
         } else {
             fn.call(target);
+
+
         }
+
+        return target;
     };
 })(this);
 

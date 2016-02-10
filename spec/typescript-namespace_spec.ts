@@ -118,3 +118,20 @@ Tinytest.add("works with anonymous functions", (test) => {
     teardown();
 });
 
+Tinytest.add("works with objects", (test) => {
+    Namespace("foo", {
+        bar: "baz"
+    });
+
+    test.isNotUndefined(foo.bar);
+    test.equal(foo.bar, "baz");
+
+    Namespace("foo", {
+        bar: "bae",
+        baz: "boo"
+    });
+    test.equal(foo.bar, "bae");
+    test.equal(foo.baz, "boo");
+
+    teardown();
+});

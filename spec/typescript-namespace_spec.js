@@ -1,8 +1,10 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -66,12 +68,13 @@ Tinytest.add("throws an error when used on anything but class", function (test) 
             function Test() {
             }
             Test.prototype.method = function () { };
-            __decorate([
-                Namespace("foo"), 
-                __metadata('design:type', Function), 
-                __metadata('design:paramtypes', []), 
-                __metadata('design:returntype', void 0)
-            ], Test.prototype, "method", null);
+            Object.defineProperty(Test.prototype, "method",
+                __decorate([
+                    Namespace("foo"), 
+                    __metadata('design:type', Function), 
+                    __metadata('design:paramtypes', []), 
+                    __metadata('design:returntype', void 0)
+                ], Test.prototype, "method", Object.getOwnPropertyDescriptor(Test.prototype, "method")));
             return Test;
         })();
     });
@@ -164,5 +167,19 @@ Tinytest.add("works with anonymous functions", function (test) {
         this.baz = "bar";
     });
     test.isNotUndefined(foo.t1.baz);
+    teardown();
+});
+Tinytest.add("works with objects", function (test) {
+    Namespace("foo", {
+        bar: "baz"
+    });
+    test.isNotUndefined(foo.bar);
+    test.equal(foo.bar, "baz");
+    Namespace("foo", {
+        bar: "bae",
+        baz: "boo"
+    });
+    test.equal(foo.bar, "bae");
+    test.equal(foo.baz, "boo");
     teardown();
 });

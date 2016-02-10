@@ -1,6 +1,6 @@
 Package.describe({
   name: 'kucharskimaciej:typescript-namespace',
-  version: '1.1.0',
+  version: '1.2.0',
   summary: 'Namespaces for TypeScript compiled Meteor',
   git: 'https://github.com/kucharskimaciej/meteor-typescript-namespace',
   documentation: 'README.md'
